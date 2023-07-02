@@ -4,6 +4,10 @@ import CustomInput from "../../includes/CustomInput";
 import CustomSelect from "../../includes/CustomSelect";
 import { ProfileFormDetails } from "./../../Constants";
 
+//redux
+import { useDispatch, useSelector } from "react-redux";
+import { updateProfile } from "../../../redux/ProfileSlice";
+
 function Profile() {
 	const defaultValue = {
 		first_name: "",
@@ -15,6 +19,8 @@ function Profile() {
 		work_type: "",
 		deledation_1: "",
 		deledation_2: "",
+		image: "",
+		email: "",
 	};
 
 	const [formData, setFormData] = useState(defaultValue);
@@ -26,6 +32,22 @@ function Profile() {
 		e.preventDefault();
 		setProfilePic(e.target.files[0]);
 		setProfileUrl(URL.createObjectURL(e.target.files[0]));
+		setFormData((prev) => ({
+			...prev,
+			image: URL.createObjectURL(e.target.files[0]),
+		}));
+	};
+	const dispatch = useDispatch();
+	const userDetails = useSelector((state) => state.profile.profileData);
+
+	const handleForm = () => {
+		const withValue = {};
+		Object.entries(formData).forEach(([key, value]) => {
+			if (value) {
+				withValue[key] = value;
+			}
+		});
+		dispatch(updateProfile(withValue));
 	};
 
 	return (
@@ -39,14 +61,20 @@ function Profile() {
 								src={
 									profileUrl
 										? profileUrl
+										: userDetails.image
+										? userDetails.image
 										: require("./../../../assets/images/person.jpg")
 								}
 								alt="image"
 							/>
 						</ProfileLeft>
 						<ProfileRight>
-							<Name>John Doe</Name>
-							<Email>john@gmail.com</Email>
+							<Name>
+								{userDetails.first_name}{" "}
+								{userDetails.middle_name}{" "}
+								{userDetails.last_name}
+							</Name>
+							<Email>{userDetails.email}</Email>
 							<EditBox htmlFor="image-file">
 								<EditIcon
 									src={
@@ -99,7 +127,13 @@ function Profile() {
 						>
 							Cancel
 						</CancelButton>
-						<SaveButton>Save</SaveButton>
+						<SaveButton
+							onClick={() => {
+								handleForm();
+							}}
+						>
+							Save
+						</SaveButton>
 					</ButtonDiv>
 				</Bottom>
 			</Container>

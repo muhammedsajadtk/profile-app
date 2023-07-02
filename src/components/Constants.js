@@ -48,6 +48,12 @@ export const ProfileFormDetails = [
 		type: "number",
 	},
 	{
+		id: 10,
+		label: "Mail ID",
+		key: "email",
+		type: "email",
+	},
+	{
 		id: 5,
 		label: "Office Desk Number",
 		key: "office_number",
@@ -72,10 +78,10 @@ export const ProfileFormDetails = [
 		key: "deledation_1",
 		type: "select",
 	},
-	{
-		id: 9,
-		label: "Delegation Type 2",
-		key: "deledation_2",
-		type: "select",
-	},
+	// {
+	// 	id: 9,
+	// 	label: "Delegation Type 2",
+	// 	key: "deledation_2",
+	// 	type: "select",
+	// },
 ];
